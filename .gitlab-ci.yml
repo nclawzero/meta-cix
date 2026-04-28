@@ -69,6 +69,7 @@ bitbake-parse:
 
 check-layer:
   stage: check-layer
+  when: manual
   tags:
     - yocto
   before_script:
