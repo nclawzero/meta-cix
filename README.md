@@ -116,3 +116,19 @@ bitbake nclawzero-image-cixpi
 - Replace genericarm64 WIC assumptions with a board-tested partition layout.
 - Re-run `yocto-check-layer` after the kernel and firmware recipes are promoted
   from scaffold to production-ready recipes.
+
+## Maintainer
+
+Jason Perlow <jperlow@gmail.com>
+
+Embedded-Linux background spans the **OpenZaurus → OpenEmbedded → Yocto** lineage as one of the original contributors. The same lineage that meta-tegra and most modern arm64 BSP layers are built on.
+
+Linux Foundation involvement includes prior LF Editorial Director role and ongoing participation in the Yocto Project and OpenEmbedded community.
+
+Adjacent active work in the wider claw-family ecosystem:
+
+- [`meta-nclawzero`](https://gitlab.com/perlowja/meta-nclawzero), [`meta-nclawzero-base`](https://gitlab.com/perlowja/meta-nclawzero-base) — sister Yocto BSP layers for the parent nclawzero distro this layer serves
+- [`nclawzero/*`](https://gitlab.com/nclawzero) — distro maintainership
+- [`openclaw/openclaw`](https://github.com/openclaw/openclaw), [`zeroclaw-labs/zeroclaw`](https://github.com/zeroclaw-labs/zeroclaw) — upstream contributions in the agent runtime layer that consumes this BSP
+
+Patches and BSP feedback welcome via GitLab MRs or GitHub PRs.
