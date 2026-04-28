@@ -58,8 +58,12 @@ bitbake-parse:
       cd /tmp/yocto-ci/poky
       rm -rf build-cixpi
       source oe-init-build-env build-cixpi > /dev/null
-      bitbake-layers add-layer "../meta-poky"
+      bitbake-layers add-layer "/tmp/yocto-ci/poky/meta-poky"
       bitbake-layers add-layer "$CI_PROJECT_DIR"
+      echo "=== bblayers.conf ==="
+      cat conf/bblayers.conf
+      echo "=== show-layers ==="
+      bitbake-layers show-layers
       cat >> conf/local.conf <<'EOF'
       MACHINE = "cixpi"
       DISTRO = "nclawzero"
@@ -89,7 +93,7 @@ check-layer:
     - cd /tmp/yocto-ci/poky
     - rm -rf build-check-layer
     - source oe-init-build-env build-check-layer > /dev/null
-    - bitbake-layers add-layer "../meta-poky"
+    - bitbake-layers add-layer "/tmp/yocto-ci/poky/meta-poky"
     - bitbake-layers add-layer "$CI_PROJECT_DIR"
     - |
       yocto-check-layer "$CI_PROJECT_DIR" --no-auto-dependency || \
