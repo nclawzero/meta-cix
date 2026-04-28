@@ -121,7 +121,21 @@ bitbake nclawzero-image-cixpi
 
 Jason Perlow <jperlow@gmail.com>
 
-Embedded-Linux background traces back to **very early ecosystem involvement in the OpenZaurus → OpenEmbedded → Yocto lineage** — at Sharp in 2002, in roles spanning documentation contributor, community / social contributor, company-side facilitator, and developer liaison for the OpenZaurus community work that grew into OpenEmbedded and ultimately Yocto. That same lineage is what meta-tegra and most modern arm64 BSP layers are built on today.
+Embedded-Linux background traces back to **Sharp Electronics' Software Developer Liaison for the Zaurus PDA platform, December 2002 – February 2003**. The community fork born from that platform — OpenZaurus (2003-2007) — became OpenEmbedded → Ångström → Yocto. Public postmortem of the Zaurus platform's developer-relations failures, written in February 2006, is at [computingunplugged.com](https://computingunplugged.com/article/the-future-of-the-palm-platform-lessons-learned-from-the-sharp-zaurus/) — many of those lessons (free/near-free tools, breadth-before-launch documentation, in-timezone English-speaking support, full-environment rebuildability, no SDK fragmentation) shape this layer's design today.
+
+Lineage:
+
+```
+Sharp Zaurus (2002)         — closed SharpROM, broken developer relations
+  ↓
+OpenZaurus (2003-2007)      — community fork
+  ↓
+OpenEmbedded                — generalized framework
+  ↓
+Ångström                    — distribution
+  ↓
+Yocto                       — what meta-cix and meta-tegra both build on
+```
 
 Linux Foundation involvement includes prior LF Editorial Director role and ongoing participation in the Yocto Project and OpenEmbedded community.
 
