@@ -121,7 +121,7 @@ bitbake nclawzero-image-cixpi
 
 Jason Perlow <jperlow@gmail.com>
 
-Embedded-Linux background traces back to **very early contributor involvement in the OpenZaurus → OpenEmbedded → Yocto lineage** — Sharp-side facilitation of the OpenZaurus community work that grew into OpenEmbedded and ultimately Yocto. That same lineage is what meta-tegra and most modern arm64 BSP layers are built on today.
+Embedded-Linux background traces back to **very early ecosystem involvement in the OpenZaurus → OpenEmbedded → Yocto lineage** — at Sharp in 2002, in roles spanning documentation contributor, community / social contributor, company-side facilitator, and developer liaison for the OpenZaurus community work that grew into OpenEmbedded and ultimately Yocto. That same lineage is what meta-tegra and most modern arm64 BSP layers are built on today.
 
 Linux Foundation involvement includes prior LF Editorial Director role and ongoing participation in the Yocto Project and OpenEmbedded community.
 
