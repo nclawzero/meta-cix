@@ -1,0 +1,79 @@
+# Yocto layer CI for meta-cix.
+# Parse is required. yocto-check-layer is advisory until the BSP is hardened
+# against real hardware and firmware constraints.
+
+stages:
+  - lint
+  - parse
+  - check-layer
+
+variables:
+  POKY_BRANCH: scarthgap
+  GIT_DEPTH: "1"
+
+lint:
+  stage: lint
+  image: python:3.11-slim
+  before_script:
+    - pip install --quiet yamllint
+  script:
+    - yamllint --no-warnings . || true
+    - grep -q '^BBFILE_COLLECTIONS' conf/layer.conf
+    - grep -q '^LAYERSERIES_COMPAT' conf/layer.conf
+    - grep -q '^BBFILE_PRIORITY' conf/layer.conf
+    - |
+      find . -name "*.bb" -print0 | xargs -0 -I FF sh -c \
+        'grep -qE "^(LICENSE|inherit|require)" "FF" || \
+        (echo "MISSING LICENSE: FF" && exit 1)'
+
+bitbake-parse:
+  stage: parse
+  tags:
+    - yocto
+  before_script:
+    - mkdir -p /tmp/yocto-ci && cd /tmp/yocto-ci
+    - |
+      if [ ! -d poky ]; then
+        git clone --depth=1 --branch=$POKY_BRANCH \
+          https://git.yoctoproject.org/poky 2>&1 | tail -2
+      else
+        cd poky
+        git fetch --depth=1 origin $POKY_BRANCH
+        git reset --hard origin/$POKY_BRANCH
+        cd ..
+      fi
+  script:
+    - cd /tmp/yocto-ci/poky
+    - rm -rf build-cixpi
+    - source oe-init-build-env build-cixpi > /dev/null
+    - bitbake-layers add-layer "$CI_PROJECT_DIR"
+    - printf '\nMACHINE = "cixpi"\nDISTRO = "nclawzero"\n' >> conf/local.conf
+    - bitbake -p
+  timeout: 45 minutes
+
+check-layer:
+  stage: check-layer
+  tags:
+    - yocto
+  before_script:
+    - mkdir -p /tmp/yocto-ci && cd /tmp/yocto-ci
+    - |
+      if [ ! -d poky ]; then
+        git clone --depth=1 --branch=$POKY_BRANCH \
+          https://git.yoctoproject.org/poky 2>&1 | tail -2
+      else
+        cd poky
+        git fetch --depth=1 origin $POKY_BRANCH
+        git reset --hard origin/$POKY_BRANCH
+        cd ..
+      fi
+  script:
+    - cd /tmp/yocto-ci/poky
+    - rm -rf build-check-layer
+    - source oe-init-build-env build-check-layer > /dev/null
+    - bitbake-layers add-layer "$CI_PROJECT_DIR"
+    - |
+      yocto-check-layer "$CI_PROJECT_DIR" --no-auto-dependency || \
+        echo "check-layer warnings present (advisory)"
+  timeout: 45 minutes
+  allow_failure: true

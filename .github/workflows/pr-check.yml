@@ -1,0 +1,48 @@
+name: PR check (Yocto parse)
+
+on:
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  layer-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install yamllint
+        run: sudo apt-get update -qq && sudo apt-get install -y yamllint
+      - name: yamllint
+        run: yamllint --no-warnings . || true
+      - name: layer.conf required directives
+        run: |
+          grep -q '^BBFILE_COLLECTIONS' conf/layer.conf
+          grep -q '^LAYERSERIES_COMPAT' conf/layer.conf
+          grep -q '^BBFILE_PRIORITY' conf/layer.conf
+      - name: recipe LICENSE check
+        run: |
+          find . -name '*.bb' -print0 | xargs -0 -I FF sh -c \
+            'grep -qE "^(LICENSE|inherit|require)" "FF" || \
+            (echo "MISSING LICENSE: FF" && exit 1)'
+
+  bitbake-parse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: meta-cix
+      - name: Clone Poky
+        run: |
+          git clone --depth=1 --branch=scarthgap \
+            https://git.yoctoproject.org/poky
+      - name: Parse metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd poky
+          source oe-init-build-env build-cixpi > /dev/null
+          bitbake-layers add-layer "$GITHUB_WORKSPACE/meta-cix"
+          cat >> conf/local.conf <<'EOF'
+          MACHINE = "cixpi"
+          DISTRO = "nclawzero"
+          EOF
+          bitbake -p
