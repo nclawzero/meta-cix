@@ -1,6 +1,6 @@
 # meta-cix
 
-`meta-cix` is the first-pass Yocto BSP layer for the nclawzero `cixpi`
+`meta-cix` is the first-pass Yocto BSP layer for the nclawzero `cixmini`
 target: Cix Sky1 / CP8180 on the Minisforum MS-R1 edge device platform.
 
 The hardware is not in hand yet, so this repository is intentionally a
@@ -10,13 +10,13 @@ MS-R1 arrives.
 
 ## Target
 
-- Machine: `cixpi`
+- Machine: `cixmini`
 - SoC family: Cix Sky1 / CP8180
 - Reference platform: Minisforum MS-R1
 - Architecture: `aarch64`
 - Firmware model: UEFI + ACPI
 - Yocto series: Scarthgap
-- Image recipe: `nclawzero-image-cixpi`
+- Image recipe: `nclawzero-image-cixmini`
 
 The Cix mainline notes currently require `clk_ignore_unused` on the kernel
 command line. The machine config appends it through `APPEND`.
@@ -81,10 +81,10 @@ git clone --depth=1 --branch=scarthgap https://git.yoctoproject.org/poky
 git clone https://gitlab.com/nclawzero/meta-cix.git
 
 cd poky
-source oe-init-build-env build-cixpi
+source oe-init-build-env build-cixmini
 bitbake-layers add-layer ../../meta-cix
 cat >> conf/local.conf <<'EOF'
-MACHINE = "cixpi"
+MACHINE = "cixmini"
 DISTRO = "nclawzero"
 EOF
 bitbake -p
@@ -93,17 +93,17 @@ bitbake -p
 When hardware blockers are resolved, the image entry point is:
 
 ```bash
-bitbake nclawzero-image-cixpi
+bitbake nclawzero-image-cixmini
 ```
 
 ## Layer Contents
 
-- `conf/machine/cixpi.conf`: generic arm64 UEFI/ACPI machine config for Sky1
+- `conf/machine/cixmini.conf`: generic arm64 UEFI/ACPI machine config for Sky1
 - `conf/distro/nclawzero.conf`: Scarthgap distro config derived from Poky
 - `recipes-bsp/cix-sky1-firmware`: platform firmware placeholders and DSP blob
 - `recipes-kernel/linux-cix-ncz`: Sky1 kernel recipe scaffold
-- `recipes-core/images/nclawzero-image-cixpi.bb`: headless first-pass image
-- `conf/templates/cixpi`: sample `bblayers.conf` and `local.conf` snippets
+- `recipes-core/images/nclawzero-image-cixmini.bb`: headless first-pass image
+- `conf/templates/cixmini`: sample `bblayers.conf` and `local.conf` snippets
 
 ## Investigate Further
 

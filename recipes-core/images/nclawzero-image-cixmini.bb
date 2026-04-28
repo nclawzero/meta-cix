@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 Jason Perlow
 # SPDX-License-Identifier: Apache-2.0
 #
-# nclawzero-image-cixpi -- first-pass headless image for Cix Sky1 / MS-R1.
+# nclawzero-image-cixmini -- first-pass headless image for Cix Sky1 / MS-R1.
 
 SUMMARY = "nclawzero Cix Sky1 edge image"
 DESCRIPTION = "Headless nclawzero image scaffold for the Cix Sky1 / CP8180 Minisforum MS-R1 target."
@@ -9,7 +9,7 @@ LICENSE = "Apache-2.0"
 
 inherit core-image
 
-COMPATIBLE_MACHINE = "(cixpi)"
+COMPATIBLE_MACHINE = "(cixmini)"
 
 IMAGE_FEATURES += " \
     ssh-server-openssh \

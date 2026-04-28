@@ -24,7 +24,7 @@ SRC_URI = " \
 
 S = "${WORKDIR}/git"
 
-COMPATIBLE_MACHINE = "(cixpi)"
+COMPATIBLE_MACHINE = "(cixmini)"
 KERNEL_VERSION_SANITY_SKIP = "1"
 KCONFIG_MODE = "alldefconfig"
 

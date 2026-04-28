@@ -47,10 +47,10 @@ jobs:
         run: |
           set -euo pipefail
           cd poky
-          source oe-init-build-env build-cixpi > /dev/null
+          source oe-init-build-env build-cixmini > /dev/null
           bitbake-layers add-layer "$GITHUB_WORKSPACE/meta-cix"
           cat >> conf/local.conf <<'EOF'
-          MACHINE = "cixpi"
+          MACHINE = "cixmini"
           DISTRO = "nclawzero"
           EOF
           bitbake -p

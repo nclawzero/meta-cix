@@ -56,11 +56,11 @@ bitbake-parse:
       export LANG=en_US.UTF-8
       export LC_ALL=en_US.UTF-8
       cd /tmp/yocto-ci/poky
-      rm -rf build-cixpi
-      source oe-init-build-env build-cixpi > /dev/null
+      rm -rf build-cixmini
+      source oe-init-build-env build-cixmini > /dev/null
       bitbake-layers add-layer "$CI_PROJECT_DIR"
       cat >> conf/local.conf <<'EOF'
-      MACHINE = "cixpi"
+      MACHINE = "cixmini"
       DISTRO = "nclawzero"
       EOF
       bitbake -p

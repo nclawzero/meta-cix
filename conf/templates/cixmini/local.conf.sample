@@ -1,7 +1,7 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 Jason Perlow
 # SPDX-License-Identifier: Apache-2.0
 
-MACHINE = "cixpi"
+MACHINE = "cixmini"
 DISTRO = "nclawzero"
 
 PACKAGE_CLASSES ?= "package_ipk"
