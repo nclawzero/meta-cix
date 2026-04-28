@@ -28,27 +28,43 @@ lint:
 
 bitbake-parse:
   stage: parse
-  tags:
-    - yocto
+  image: ubuntu:24.04
   before_script:
-    - mkdir -p /tmp/yocto-ci && cd /tmp/yocto-ci
+    - export DEBIAN_FRONTEND=noninteractive
+    - apt-get update -qq
     - |
-      if [ ! -d poky ]; then
-        git clone --depth=1 --branch=$POKY_BRANCH \
-          https://git.yoctoproject.org/poky 2>&1 | tail -2
-      else
-        cd poky
-        git fetch --depth=1 origin $POKY_BRANCH
-        git reset --hard origin/$POKY_BRANCH
-        cd ..
-      fi
+      apt-get install -y --no-install-recommends \
+        git ca-certificates python3 python3-pexpect python3-git \
+        python3-jinja2 python3-subunit gawk wget diffstat unzip texinfo \
+        gcc build-essential chrpath socat cpio xz-utils debianutils \
+        iputils-ping file locales zstd liblz4-tool sudo >/dev/null
+    - locale-gen en_US.UTF-8 >/dev/null
+    - useradd -m -s /bin/bash builder
+    - mkdir -p /tmp/yocto-ci && cd /tmp/yocto-ci
+    - chown -R builder:builder /tmp/yocto-ci "$CI_PROJECT_DIR"
+    - |
+      sudo -u builder -H env POKY_BRANCH="$POKY_BRANCH" bash -lc '
+      set -eo pipefail
+      cd /tmp/yocto-ci
+      git clone --depth=1 --branch=$POKY_BRANCH \
+        https://git.yoctoproject.org/poky 2>&1 | tail -2
+      '
   script:
-    - cd /tmp/yocto-ci/poky
-    - rm -rf build-cixpi
-    - source oe-init-build-env build-cixpi > /dev/null
-    - bitbake-layers add-layer "$CI_PROJECT_DIR"
-    - printf '\nMACHINE = "cixpi"\nDISTRO = "nclawzero"\n' >> conf/local.conf
-    - bitbake -p
+    - |
+      sudo -u builder -H env CI_PROJECT_DIR="$CI_PROJECT_DIR" bash <<'EOS'
+      set -eo pipefail
+      export LANG=en_US.UTF-8
+      export LC_ALL=en_US.UTF-8
+      cd /tmp/yocto-ci/poky
+      rm -rf build-cixpi
+      source oe-init-build-env build-cixpi > /dev/null
+      bitbake-layers add-layer "$CI_PROJECT_DIR"
+      cat >> conf/local.conf <<'EOF'
+      MACHINE = "cixpi"
+      DISTRO = "nclawzero"
+      EOF
+      bitbake -p
+      EOS
   timeout: 45 minutes
 
 check-layer:

@@ -30,6 +30,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: meta-cix
+      - name: Install Yocto parse dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            git ca-certificates python3 python3-pexpect python3-git \
+            python3-jinja2 python3-subunit gawk wget diffstat unzip \
+            texinfo gcc build-essential chrpath socat cpio xz-utils \
+            debianutils iputils-ping file locales zstd liblz4-tool
       - name: Clone Poky
         run: |
           git clone --depth=1 --branch=scarthgap \
