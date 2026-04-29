@@ -17,6 +17,12 @@ SRCREV_kernel = "f338e77383789c0cae23ca3d48adcc5e9e137e3c"
 SRCREV_cixmain = "0aebbccfd5694e7f0ba6aaae8be7e74b86bc3fa6"
 SRCREV_FORMAT = "kernel_cixmain"
 
+# branch=master is the FETCH hint; the actual checkout is pinned by SRCREV_kernel
+# below. We track torvalds/master rather than a stable LTS branch because the Cix
+# Sky1 patch stack (cixtech/cix-linux-main) is maintained against bleeding-edge
+# 7.0-rc, not against any LTS line yet. When a stable 7.0 GA tag lands and the
+# Cix patches rebase onto it, switch to `tag=v7.0` (or whatever the stable target
+# is) and update SRCREV_kernel accordingly.
 SRC_URI = " \
     git://github.com/torvalds/linux.git;protocol=https;branch=master;name=kernel;destsuffix=git \
     git://github.com/cixtech/cix-linux-main.git;protocol=https;branch=main;name=cixmain;destsuffix=cix-linux-main \

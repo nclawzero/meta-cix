@@ -11,9 +11,12 @@ inherit core-image
 
 COMPATIBLE_MACHINE = "(cixmini)"
 
+# debug-tweaks is intentionally NOT in the canonical image — it leaves the
+# root password unset and is a Layer Index review concern. Dev builds can
+# opt in via local.conf:
+#     EXTRA_IMAGE_FEATURES = "debug-tweaks empty-root-password allow-empty-password"
 IMAGE_FEATURES += " \
     ssh-server-openssh \
-    debug-tweaks \
 "
 
 IMAGE_INSTALL = " \
