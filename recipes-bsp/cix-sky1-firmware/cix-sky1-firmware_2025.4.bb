@@ -22,3 +22,8 @@ FILES:${PN} = " \
     ${nonarch_base_libdir}/firmware/cix/dsp_fw.bin \
     ${nonarch_base_libdir}/firmware/dsp_fw.bin \
 "
+
+# DSP firmware blob is for the Sky1 audio DSP coprocessor, not the main aarch64
+# CPU. allarch is correct for deployment (the file is arch-agnostic from the
+# rootfs side) but QA objdump-scans the ELF and complains. Skip arch + strip.
+INSANE_SKIP:${PN} += "arch already-stripped"
