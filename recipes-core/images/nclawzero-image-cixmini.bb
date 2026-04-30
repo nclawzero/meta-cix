@@ -55,7 +55,7 @@ IMAGE_INSTALL = " \
     bind-utils \
     \
     pciutils usbutils i2c-tools ethtool dmidecode \
-    e2fsprogs parted gdisk util-linux \
+    e2fsprogs parted gptfdisk util-linux \
     smartmontools hdparm \
     \
     chrony \
